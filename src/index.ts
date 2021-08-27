@@ -1,13 +1,19 @@
-import express, {Request,Response,Application} from 'express'
+import express, {Application} from 'express'
+import dotenv from "dotenv"
+import router from './routes/convertRoutes'
+
+dotenv.config()
 
 const app:Application = express()
 
-const PORT = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 
-app.get('/', (req:Request, res:Response):void => {
-    res.send("Oh, hello there")
-})
+//configure Middleware
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
+// app.use("/api/v1/convert", router)
+app.use('/', router)
 
-app.listen(PORT, () => {
-    console.log('The application is listening on port 3000!')
+app.listen(port, () => {
+    console.log(`The application is listening on port ${port}!`)
 })
